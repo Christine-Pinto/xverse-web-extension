@@ -8,6 +8,7 @@ export const test = baseTest.extend<{
   page: Page;
   landing: Landing;
 }>({
+  // parts of the setup for the persistent context from https://playwright.dev/docs/chrome-extensions#testing
   context: async ({}, use) => {
     const extPath = path.join(__dirname, '../../build');
     const context = await chromium.launchPersistentContext('', {

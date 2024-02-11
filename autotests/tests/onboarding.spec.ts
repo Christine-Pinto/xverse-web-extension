@@ -56,17 +56,19 @@ test.describe('Onboarding', () => {
       await onboarding.buttonCloseTab.click();
       expect(context.pages()).toHaveLength(1);
     });
-  });
+    });
 
   test('Restore Wallet', async ({ context, landing }) => {
     await test.step('open restore wallet page in a new tab', async () => {
       await landing.buttonRestoreWallet.click();
-      expect(context.pages()).toHaveLength(2);
+      await expect(context.pages()).toHaveLength(2);
       const [, newPage] = context.pages();
+      await expect(newPage.url()).toContain("onboarding?restore=true");
       await newPage.waitForURL('**/onboarding?restore=true');
       onboarding = new Onboarding(newPage);
     });
     await test.step('navigate onboarding pages', async () => {
+      await expect(onboarding.buttonNext).toBeVisible();
       await onboarding.buttonNext.click();
       await onboarding.buttonNext.click();
       await onboarding.buttonContinue.click();
@@ -90,6 +92,7 @@ test.describe('Onboarding', () => {
       await onboarding.buttonContinue.click();
     });
     await test.step('create password', async () => {
+      await expect(onboarding.inputPassword).toBeVisible()
       await onboarding.inputPassword.fill(data.walletPassword);
       await onboarding.buttonContinue.click();
       await onboarding.inputPassword.fill(data.walletPassword);
